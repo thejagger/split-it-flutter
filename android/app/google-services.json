@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "465981896117",
+    "firebase_url": "https://split-it-8fa34-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "split-it-8fa34",
+    "storage_bucket": "split-it-8fa34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465981896117:android:7cd2ea4f0064568579d5fc",
+        "android_client_info": {
+          "package_name": "com.example.split_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465981896117-bbsj0f11r4pr6irkl40f6faedd9j5mfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPS2pim57B2z9PGzFHsd9o_tgbBd0yI7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465981896117-bbsj0f11r4pr6irkl40f6faedd9j5mfo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "465981896117-c06cmek5s582fatrkuujqq1g2mtjegjc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplication1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
