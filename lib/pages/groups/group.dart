@@ -14,7 +14,7 @@ class _GroupState extends State<Group> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("Group").snapshots(),
+        stream: FirebaseFirestore.instance.collection("groups").orderBy("name").snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Text(

@@ -1,4 +1,11 @@
 {
-  "addNewGroup": "new Group",
-  "addNewExpense": "new Expense"
+  "addNewGroup": "New Group",
+  "addNewExpense": "New Expense",
+  "groups": "Groups",
+  "createNewGroup": "Create Group",
+  "groupName": "Name",
+  "groupNameValidationEmpty": "Please enter a name",
+  "expenses": "Expenses",
+  "settings": "Settings",
+  "create": "Create"
 }

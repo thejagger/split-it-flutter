@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import './theme/theme.dart';
 import 'auth_gate.dart';
+import 'constants.dart';
 import 'firebase_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,16 +17,40 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ColorSeed colorSelected = ColorSeed.baseColor;
+
+  void handleColorSelect(int value) {
+    setState(() {
+      colorSelected = ColorSeed.values[value];
+    });
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SplitIt',
-      theme: const MaterialTheme(TextTheme()).light(),
-      home: const AuthGate(),
+      theme: ThemeData(
+          colorSchemeSeed: colorSelected.color,
+          useMaterial3: true,
+          brightness: Brightness.light),
+      darkTheme: ThemeData(
+          colorSchemeSeed: colorSelected.color,
+          useMaterial3: true,
+          brightness: Brightness.dark),
+      themeMode: ThemeMode.system,
+      home: AuthGate(
+        colorSelected: colorSelected,
+        handleColorSelect: handleColorSelect,
+      ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
     );

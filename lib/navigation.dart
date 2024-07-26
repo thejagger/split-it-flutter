@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:split_it/pages/group.dart';
+import 'package:split_it/pages/groups/group.dart';
+import 'package:split_it/pages/groups/new_group.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'constants.dart';
+
 class NavigationScreen extends StatefulWidget {
-  const NavigationScreen({super.key});
+  const NavigationScreen(
+      {super.key,
+      required this.colorSelected,
+      required this.handleColorSelect});
+
+  final ColorSeed colorSelected;
+  final void Function(int) handleColorSelect;
 
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
@@ -19,7 +28,18 @@ class _NavigationScreenState extends State<NavigationScreen> {
     FloatingActionButton? floatingActionButtonWidget;
     if (currentPageIndex == 0) {
       floatingActionButtonWidget = FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+              useSafeArea: true,
+              context: context,
+              showDragHandle: true,
+              isScrollControlled: true,
+              builder: (context) {
+                return NewGroup(
+                    colorSelected: widget.colorSelected,
+                    handleColorSelect: widget.handleColorSelect);
+              });
+        },
         label: Text(AppLocalizations.of(context)!.addNewGroup),
         icon: const Icon(Icons.add),
       );
@@ -40,21 +60,21 @@ class _NavigationScreenState extends State<NavigationScreen> {
             });
           },
           selectedIndex: currentPageIndex,
-          destinations: const <Widget>[
+          destinations: <Widget>[
             NavigationDestination(
-              selectedIcon: Icon(Icons.group),
-              icon: Icon(Icons.group_outlined),
-              label: 'Gruppen',
+              selectedIcon: const Icon(Icons.group),
+              icon: const Icon(Icons.group_outlined),
+              label: AppLocalizations.of(context)!.groups,
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.receipt_long),
-              icon: Icon(Icons.receipt_long_outlined),
-              label: 'Ausgaben',
+              selectedIcon: const Icon(Icons.receipt_long),
+              icon: const Icon(Icons.receipt_long_outlined),
+              label: AppLocalizations.of(context)!.expenses,
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.settings),
-              icon: Icon(Icons.settings_outlined),
-              label: 'Settings',
+              selectedIcon: const Icon(Icons.settings),
+              icon: const Icon(Icons.settings_outlined),
+              label: AppLocalizations.of(context)!.settings,
             ),
           ],
         ),
