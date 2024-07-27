@@ -5,7 +5,10 @@
   "createNewGroup": "Create Group",
   "groupName": "Name",
   "groupNameValidationEmpty": "Please enter a name",
+  "groupDeleteItemTitle": "Delete this group?",
   "expenses": "Expenses",
   "settings": "Settings",
-  "create": "Create"
+  "create": "create",
+  "cancel": "cancel",
+  "delete": "delete"
 }

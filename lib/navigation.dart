@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:split_it/pages/groups/group.dart';
+import 'package:split_it/pages/groups/group_list.dart';
 import 'package:split_it/pages/groups/new_group.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -79,8 +79,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ],
         ),
         body: <Widget>[
-          /// Group
-          const Group(),
+          /// GroupList
+          const GroupList(),
 
           /// Notifications page
           const Padding(
