@@ -22,6 +22,9 @@ class _GroupDetailState extends State<GroupDetail> {
         );
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('geiloooo'),
+      ),
       body: Column(
         children: [
           Text('hhaaaaans'),

@@ -7,16 +7,8 @@ import 'constants.dart';
 import 'main.dart';
 import 'navigation.dart';
 
-
 class AuthGate extends StatelessWidget {
-  const AuthGate({
-    super.key,
-    required this.colorSelected,
-    required this.handleColorSelect,  
-  });
-
-  final ColorSeed colorSelected;
-  final void Function(int) handleColorSelect;
+  const AuthGate({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +16,26 @@ class AuthGate extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return SignInScreen(
-            providers: [
-              EmailAuthProvider(),
-              GoogleProvider(clientId: clientId),
-            ],
-          );
+          return MaterialApp(
+              title: 'SplitIt',
+              theme: ThemeData(
+                  colorSchemeSeed: ColorSeed.baseColor.color,
+                  useMaterial3: true,
+                  brightness: Brightness.light),
+              darkTheme: ThemeData(
+                  colorSchemeSeed: ColorSeed.baseColor.color,
+                  useMaterial3: true,
+                  brightness: Brightness.dark),
+              themeMode: ThemeMode.system,
+              home: SignInScreen(
+                providers: [
+                  EmailAuthProvider(),
+                  GoogleProvider(clientId: clientId),
+                ],
+              ));
         }
 
-        return NavigationScreen(
-          colorSelected: colorSelected,
-          handleColorSelect: handleColorSelect
-        );
+        return const NavigationScreen();
       },
     );
   }

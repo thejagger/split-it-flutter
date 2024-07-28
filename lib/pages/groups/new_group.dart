@@ -37,68 +37,75 @@ class _NewGroupState extends State<NewGroup> {
     return SingleChildScrollView(
       child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: Padding(padding: MediaQuery.of(context).viewInsets, child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)!.createNewGroup,
-                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          color: Theme.of(context).colorScheme.primary)),
-                  const SizedBox(height: spacing),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: groupNameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return AppLocalizations.of(context)!
-                            .groupNameValidationEmpty;
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: AppLocalizations.of(context)!.groupName,
-                    ),
-                  ),
-                  const SizedBox(height: spacing),
-                  GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 4),
-                      padding: const EdgeInsets.all(8),
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: ColorSeed.values.length,
-                      itemBuilder: (context, i) {
-                        return IconButton(
-                            icon: const Icon(Icons.radio_button_unchecked),
-                            selectedIcon:
-                                const Icon(Icons.radio_button_checked),
-                            color: ColorSeed.values[i].color,
-                            isSelected:
-                                widget.colorSelected == ColorSeed.values[i],
-                            onPressed: () {
-                              widget.handleColorSelect(i);
-                            });
-                      }),
-                  const SizedBox(height: spacing),
-                  FilledButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          db.collection("groups").add({
-                            "name": groupNameController.text,
-                            "color_seed_hash": widget.colorSelected.color.value
-                          }).then(
-                              (documentSnapshot) => {Navigator.pop(context)});
-                        }
-                      },
-                      child: Text(AppLocalizations.of(context)!.create))
-                ],
-              )))),
+          child: Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(AppLocalizations.of(context)!.createNewGroup,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.primary)),
+                      const SizedBox(height: spacing),
+                      TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        controller: groupNameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppLocalizations.of(context)!
+                                .groupNameValidationEmpty;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: AppLocalizations.of(context)!.groupName,
+                        ),
+                      ),
+                      const SizedBox(height: spacing),
+                      GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 5,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 4),
+                          padding: const EdgeInsets.all(8),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: ColorSeed.values.length,
+                          itemBuilder: (context, i) {
+                            return IconButton(
+                                icon: const Icon(Icons.radio_button_unchecked),
+                                selectedIcon:
+                                    const Icon(Icons.radio_button_checked),
+                                color: ColorSeed.values[i].color,
+                                isSelected:
+                                    widget.colorSelected == ColorSeed.values[i],
+                                onPressed: () {
+                                  widget.handleColorSelect(i);
+                                });
+                          }),
+                      const SizedBox(height: spacing),
+                      FilledButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              db.collection("groups").add({
+                                "name": groupNameController.text,
+                                "color_seed_hash":
+                                    widget.colorSelected.color.value
+                              }).then((documentSnapshot) =>
+                                  {Navigator.pop(context)});
+                            }
+                          },
+                          child: Text(AppLocalizations.of(context)!.create))
+                    ],
+                  )))),
     );
   }
 }
