@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_it/pages/groups/group_detail.dart';
 import 'package:split_it/pages/groups/group_list.dart';
-import 'package:split_it/pages/groups/new_group.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'constants.dart';
@@ -24,7 +23,6 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   late RouterConfig<Object> _routerConfig;
-  int currentPageIndex = 0;
 
   ColorSeed colorSelected = ColorSeed.baseColor;
 
@@ -70,7 +68,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
                         path: 'details',
                         builder: (context, state) {
                           String id = state.extra as String;
-                          return GroupDetail(groupDocId: id);
+                          return GroupDetail(
+                              handleColorSelect: handleColorSelect,
+                              groupDocId: id);
                         }),
                   ],
                 ),
@@ -162,33 +162,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    // FloatingActionButton? floatingActionButtonWidget;
-    // if (currentPageIndex == 0) {
-    //   floatingActionButtonWidget = FloatingActionButton.extended(
-    //     onPressed: () {
-    //       showModalBottomSheet(
-    //           useSafeArea: true,
-    //           context: context,
-    //           showDragHandle: true,
-    //           isScrollControlled: true,
-    //           builder: (context) {
-    //             return NewGroup(
-    //                 colorSelected: widget.colorSelected,
-    //                 handleColorSelect: widget.handleColorSelect);
-    //           });
-    //     },
-    //     label: Text(AppLocalizations.of(context)!.addNewGroup),
-    //     icon: const Icon(Icons.add),
-    //   );
-    // } else if (currentPageIndex == 1) {
-    //   floatingActionButtonWidget = FloatingActionButton.extended(
-    //     onPressed: () {},
-    //     label: Text(AppLocalizations.of(context)!.addNewExpense),
-    //     icon: const Icon(Icons.add),
-    //   );
-    // }
-
     return MaterialApp.router(
       routerConfig: _routerConfig,
       title: 'SplitIt',

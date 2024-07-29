@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 enum ColorSeed {
-  baseColor('M3 Baseline', Color(0xff6750a4)),
+  baseColor('Teal', Colors.teal),
   indigo('Indigo', Colors.indigo),
   blue('Blue', Colors.blue),
-  teal('Teal', Colors.teal),
+  m3Baseline('M3 Baseline', Color(0xff6750a4)),
   green('Green', Colors.green),
   yellow('Yellow', Colors.yellow),
   orange('Orange', Colors.orange),

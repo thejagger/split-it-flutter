@@ -5,13 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../constants.dart';
 
 class NewGroup extends StatefulWidget {
-  const NewGroup(
-      {super.key,
-      required this.colorSelected,
-      required this.handleColorSelect});
-
-  final ColorSeed colorSelected;
-  final void Function(int) handleColorSelect;
+  const NewGroup({super.key});
 
   @override
   State<NewGroup> createState() => _NewGroupState();
@@ -21,13 +15,13 @@ class _NewGroupState extends State<NewGroup> {
   final _formKey = GlobalKey<FormState>();
   final db = FirebaseFirestore.instance;
   final groupNameController = TextEditingController();
-  final groupColorController = TextEditingController();
+
+  ColorSeed groupColor = ColorSeed.baseColor;
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     groupNameController.dispose();
-    groupColorController.dispose();
     super.dispose();
   }
 
@@ -85,10 +79,11 @@ class _NewGroupState extends State<NewGroup> {
                                 selectedIcon:
                                     const Icon(Icons.radio_button_checked),
                                 color: ColorSeed.values[i].color,
-                                isSelected:
-                                    widget.colorSelected == ColorSeed.values[i],
+                                isSelected: groupColor == ColorSeed.values[i],
                                 onPressed: () {
-                                  widget.handleColorSelect(i);
+                                  setState(() {
+                                    groupColor = ColorSeed.values[i];
+                                  });
                                 });
                           }),
                       const SizedBox(height: spacing),
@@ -97,8 +92,7 @@ class _NewGroupState extends State<NewGroup> {
                             if (_formKey.currentState!.validate()) {
                               db.collection("groups").add({
                                 "name": groupNameController.text,
-                                "color_seed_hash":
-                                    widget.colorSelected.color.value
+                                "color_value": groupColor.color.value
                               }).then((documentSnapshot) =>
                                   {Navigator.pop(context)});
                             }

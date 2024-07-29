@@ -62,9 +62,7 @@ class _GroupListState extends State<GroupList> {
                 showDragHandle: true,
                 isScrollControlled: true,
                 builder: (context) {
-                  return NewGroup(
-                      colorSelected: widget.colorSelected,
-                      handleColorSelect: widget.handleColorSelect);
+                  return const NewGroup();
                 });
           },
           label: Text(AppLocalizations.of(context)!.addNewGroup),
@@ -88,8 +86,8 @@ class _GroupListState extends State<GroupList> {
                     }
 
                     var colorSeedValue = ColorSeed.baseColor.color;
-                    if (ds["color_seed_hash"] is int) {
-                      colorSeedValue = Color(ds["color_seed_hash"]);
+                    if (ds["color_value"] is int) {
+                      colorSeedValue = Color(ds["color_value"]);
                     }
 
                     return Padding(
@@ -101,8 +99,18 @@ class _GroupListState extends State<GroupList> {
                             surfaceTintColor: colorSeedValue,
                             child: InkWell(
                                 borderRadius: BorderRadius.circular(12.0),
-                                onTap: () => GoRouter.of(context)
-                                    .go('/group/details', extra: ds.id),
+                                onTap: () {
+                                  var selectedColor = ColorSeed.values
+                                      .firstWhere(
+                                          (color) =>
+                                              color.color.value ==
+                                              ds["color_value"],
+                                          orElse: () => ColorSeed.baseColor);
+
+                                  widget.handleColorSelect(selectedColor.index);
+                                  GoRouter.of(context)
+                                      .go('/group/details', extra: ds.id);
+                                },
                                 child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 5, 5, 10),

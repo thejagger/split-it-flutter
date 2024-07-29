@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class GroupDetail extends StatefulWidget {
-  const GroupDetail({super.key, required this.groupDocId});
+  const GroupDetail(
+      {super.key, required this.handleColorSelect, required this.groupDocId});
 
+  final void Function(int) handleColorSelect;
   final String groupDocId;
 
   @override
@@ -15,22 +17,25 @@ class _GroupDetailState extends State<GroupDetail> {
   Widget build(BuildContext context) {
     final db = FirebaseFirestore.instance;
 
-    final docRef = db.collection("groups").doc(widget.groupDocId);
-    docRef.snapshots().listen(
-          (event) => print("current data: ${event.data()}"),
-          onError: (error) => print("Listen failed: $error"),
-        );
+    return StreamBuilder(
+        stream: db.collection("groups").doc(widget.groupDocId).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Something went wrong', style: Theme.of(context).textTheme.headlineMedium));
+          }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('geiloooo'),
-      ),
-      body: Column(
-        children: [
-          Text('hhaaaaans'),
-          // Text(document..["name"]),
-        ],
-      ),
-    );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: Text("Loading", style: Theme.of(context).textTheme.headlineMedium));
+          }
+
+          Map<String, dynamic> data = snapshot.data!.data()!;
+
+          return Scaffold(
+              appBar: AppBar(
+                  leading: const BackButton(),
+                  title: Text(data["name"]),
+                  centerTitle: true),
+              body: Center(child: Text(data["name"], style: Theme.of(context).textTheme.headlineMedium)));
+        });
   }
 }
