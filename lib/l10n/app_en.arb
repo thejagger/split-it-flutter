@@ -6,9 +6,19 @@
   "groupName": "Name",
   "groupNameValidationEmpty": "Please enter a name",
   "groupDeleteItemTitle": "Delete this group?",
+  "groupNoEntries": "Create a group to get startet.",
   "expenses": "Expenses",
+  "createNewExpense": "Create Expense",
+  "expenseName": "Description",
+  "expenseNameValidationEmpty": "Please enter a description",
+  "expenseAmount": "Amount",
+  "expenseAmountValidationEmpty": "Please enter an amount",
+  "expenseDeleteItemTitle": "Delete this expense?",
+  "expenseNoEntries": "Create an expense to get startet.",
   "settings": "Settings",
   "create": "create",
   "cancel": "cancel",
-  "delete": "delete"
+  "delete": "delete",
+  "generalError": "Something went wrong",
+  "loading": "loading"
 }

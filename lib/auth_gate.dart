@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
@@ -28,6 +29,18 @@ class AuthGate extends StatelessWidget {
                   brightness: Brightness.dark),
               themeMode: ThemeMode.system,
               home: SignInScreen(
+                actions: [
+                  AuthStateChangeAction<SignedIn>((context, state) {
+                    FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(state.user?.uid)
+                        .set({
+                      "displayName": state.user?.displayName,
+                      "email": state.user?.email,
+                      "uid": state.user?.uid
+                    }, SetOptions(merge: true));
+                  }),
+                ],
                 providers: [
                   EmailAuthProvider(),
                   GoogleProvider(clientId: clientId),

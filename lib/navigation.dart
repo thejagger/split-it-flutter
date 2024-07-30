@@ -5,6 +5,7 @@ import 'package:split_it/pages/groups/group_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'constants.dart';
+import 'pages/settings/setting.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorGroupKey =
@@ -116,41 +117,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 // top route inside branch
                 GoRoute(
                   path: '/setting',
-                  pageBuilder: (context, state) => NoTransitionPage(
-                      child: ListView.builder(
-                    reverse: true,
-                    itemCount: 2,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == 0) {
-                        return Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            margin: const EdgeInsets.all(8.0),
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              'Hello',
-                            ),
-                          ),
-                        );
-                      }
-                      return Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.all(8.0),
-                          padding: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Text(
-                            'Hi!',
-                          ),
-                        ),
-                      );
-                    },
-                  )),
+                  pageBuilder: (context, state) => const NoTransitionPage(
+                    child: Setting(),
+                  ),
                 ),
               ],
             ),

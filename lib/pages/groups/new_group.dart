@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,6 +15,7 @@ class NewGroup extends StatefulWidget {
 class _NewGroupState extends State<NewGroup> {
   final _formKey = GlobalKey<FormState>();
   final db = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
   final groupNameController = TextEditingController();
 
   ColorSeed groupColor = ColorSeed.baseColor;
@@ -92,7 +94,8 @@ class _NewGroupState extends State<NewGroup> {
                             if (_formKey.currentState!.validate()) {
                               db.collection("groups").add({
                                 "name": groupNameController.text,
-                                "color_value": groupColor.color.value
+                                "colorValue": groupColor.color.value,
+                                "createdBy": auth.currentUser?.uid
                               }).then((documentSnapshot) =>
                                   {Navigator.pop(context)});
                             }

@@ -54,28 +54,22 @@ class _GroupListState extends State<GroupList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            showModalBottomSheet(
-                useSafeArea: true,
-                context: context,
-                showDragHandle: true,
-                isScrollControlled: true,
-                builder: (context) {
-                  return const NewGroup();
-                });
-          },
-          label: Text(AppLocalizations.of(context)!.addNewGroup),
-          icon: const Icon(Icons.add),
-        ),
         body: StreamBuilder(
             stream: db.collection("groups").orderBy("name").snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Text(
-                  'No Data...',
+                return const Center(
+                  child: CircularProgressIndicator(
+                    value: null,
+                  ),
                 );
               } else {
+                if (snapshot.data!.docs.isEmpty) {
+                  return Center(
+                      child: Text(AppLocalizations.of(context)!.groupNoEntries,
+                          style: Theme.of(context).textTheme.headlineMedium));
+                }
+
                 return ListView.builder(
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index) {
@@ -86,8 +80,8 @@ class _GroupListState extends State<GroupList> {
                     }
 
                     var colorSeedValue = ColorSeed.baseColor.color;
-                    if (ds["color_value"] is int) {
-                      colorSeedValue = Color(ds["color_value"]);
+                    if (ds["colorValue"] is int) {
+                      colorSeedValue = Color(ds["colorValue"]);
                     }
 
                     return Padding(
@@ -100,14 +94,6 @@ class _GroupListState extends State<GroupList> {
                             child: InkWell(
                                 borderRadius: BorderRadius.circular(12.0),
                                 onTap: () {
-                                  var selectedColor = ColorSeed.values
-                                      .firstWhere(
-                                          (color) =>
-                                              color.color.value ==
-                                              ds["color_value"],
-                                          orElse: () => ColorSeed.baseColor);
-
-                                  widget.handleColorSelect(selectedColor.index);
                                   GoRouter.of(context)
                                       .go('/group/details', extra: ds.id);
                                 },
@@ -155,7 +141,7 @@ class _GroupListState extends State<GroupList> {
                                         Align(
                                           alignment: Alignment.bottomLeft,
                                           child: Text(
-                                            ds?["name"],
+                                            ds["name"],
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headlineMedium,
@@ -166,6 +152,20 @@ class _GroupListState extends State<GroupList> {
                   },
                 );
               }
-            }));
+            }),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            showModalBottomSheet(
+                useSafeArea: true,
+                context: context,
+                showDragHandle: true,
+                isScrollControlled: true,
+                builder: (context) {
+                  return const NewGroup();
+                });
+          },
+          label: Text(AppLocalizations.of(context)!.addNewGroup),
+          icon: const Icon(Icons.add),
+        ));
   }
 }
