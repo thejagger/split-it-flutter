@@ -68,24 +68,30 @@ class _GroupDetailState extends State<GroupDetail> {
             );
           }
 
-          Map<String, dynamic> data = snapshot.data!.data()!;
+          String groupDocId = snapshot.data!.id;
+          Map<String, dynamic> groupData = snapshot.data!.data()!;
 
           var colorSeedValue = ColorSeed.baseColor.color;
-          if (data["colorValue"] is int) {
-            colorSeedValue = Color(data["colorValue"]);
+          if (groupData["colorValue"] is int) {
+            colorSeedValue = Color(groupData["colorValue"]);
           }
 
           return Scaffold(
             appBar: AppBar(
                 leading: const BackButton(),
-                title: Text(data["name"]),
+                title: Text(groupData["name"]),
                 centerTitle: true),
             body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               Center(
-                  child: Text(data["name"],
+                  child: Text(groupData["name"],
                       style: Theme.of(context).textTheme.headlineMedium)),
               StreamBuilder(
-                  stream: db.collection("groups").doc(snapshot.data!.id).collection("expenses").orderBy("name").snapshots(),
+                  stream: db
+                      .collection("groups")
+                      .doc(groupDocId)
+                      .collection("expenses")
+                      .orderBy("name")
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(
@@ -104,7 +110,7 @@ class _GroupDetailState extends State<GroupDetail> {
                       }
 
                       return Expanded(
-                        child: ListView.builder(
+                          child: ListView.builder(
                         itemCount: snapshot.data?.docs.length,
                         itemBuilder: (context, index) {
                           DocumentSnapshot? ds = snapshot.data?.docs[index];
@@ -124,9 +130,7 @@ class _GroupDetailState extends State<GroupDetail> {
                                   child: InkWell(
                                       borderRadius: BorderRadius.circular(12.0),
                                       onTap: () {
-                                        GoRouter.of(context).go(
-                                            '/expense/details',
-                                            extra: ds.id);
+                                        GoRouter.of(context).go("/group/details/expense?groupDocId=$groupDocId&expenseDocId=${ds.id}");
                                       },
                                       child: Padding(
                                           padding: const EdgeInsets.fromLTRB(

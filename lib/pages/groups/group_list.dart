@@ -94,8 +94,7 @@ class _GroupListState extends State<GroupList> {
                             child: InkWell(
                                 borderRadius: BorderRadius.circular(12.0),
                                 onTap: () {
-                                  GoRouter.of(context)
-                                      .go('/group/details', extra: ds.id);
+                                  GoRouter.of(context).go("/group/details?groupDocId=${ds.id}");
                                 },
                                 child: Padding(
                                     padding:

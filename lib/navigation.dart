@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:split_it/pages/expenses/expense_detail.dart';
 import 'package:split_it/pages/groups/group_detail.dart';
 import 'package:split_it/pages/groups/group_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -68,11 +69,25 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     GoRoute(
                         path: 'details',
                         builder: (context, state) {
-                          String id = state.extra as String;
+                          String groupDocId = state.uri.queryParameters["groupDocId"] as String;
                           return GroupDetail(
                               handleColorSelect: handleColorSelect,
-                              groupDocId: id);
-                        }),
+                              groupDocId: groupDocId);
+                        },
+                        routes: [
+                          GoRoute(
+                              path: 'expense',
+                              builder: (context, state) {
+                                String groupDocId = state.uri.queryParameters["groupDocId"] as String;
+                                String expenseDocId = state.uri.queryParameters["expenseDocId"] as String;
+
+                                return ExpenseDetail(
+                                    handleColorSelect: handleColorSelect,
+                                    groupDocId: groupDocId,
+                                    expenseDocId: expenseDocId,
+                                  );
+                              })
+                        ]),
                   ],
                 ),
               ],
