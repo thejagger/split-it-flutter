@@ -32,9 +32,9 @@ class AuthGate extends StatelessWidget {
                 actions: [
                   AuthStateChangeAction<SignedIn>((context, state) {
                     FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(state.user?.uid)
-                        .set({
+                    .collection("users")
+                    .doc(state.user?.uid)
+                    .set({
                       "displayName": state.user?.displayName,
                       "email": state.user?.email,
                       "uid": state.user?.uid

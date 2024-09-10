@@ -74,7 +74,8 @@ class _NewExpenseState extends State<NewExpense> {
                       const SizedBox(height: spacing),
                       TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
                         controller: expenseAmountController,
                         inputFormatters: [
                           DecimalTextInputFormatter(decimalRange: 2)
@@ -106,18 +107,41 @@ class _NewExpenseState extends State<NewExpense> {
                       FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
+                              var amount =
+                                  double.parse(expenseAmountController.text);
+
                               db
                                   .collection("groups")
                                   .doc(widget.groupDocId)
                                   .collection("expenses")
                                   .add({
                                 "name": expenseNameController.text,
-                                "amount":
-                                    double.parse(expenseAmountController.text),
+                                "amount": amount,
                                 "createdBy": auth.currentUser?.uid,
                                 "createdAt": FieldValue.serverTimestamp(),
-                              }).then((documentSnapshot) =>
-                                      {Navigator.pop(context)});
+                              }).then((documentSnapshot) {
+                                db
+                                    .collection("groups")
+                                    .doc(widget.groupDocId)
+                                    .collection("expenses")
+                                    .aggregate(sum("amount"))
+                                    .get()
+                                    .then((AggregateQuerySnapshot
+                                        aggregateSnapshot) {
+                                  db
+                                      .collection("groups")
+                                      .doc(widget.groupDocId)
+                                      .update({
+                                    "sumAmount":
+                                        aggregateSnapshot.getSum("amount") ??
+                                            0.0
+                                  }).then(
+                                    (value) {
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                });
+                              });
                             }
                           },
                           child: Text(AppLocalizations.of(context)!.create))

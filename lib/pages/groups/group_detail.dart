@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../../constants.dart';
 import '../expenses/new_expense.dart';
@@ -82,15 +83,12 @@ class _GroupDetailState extends State<GroupDetail> {
                 title: Text(groupData["name"]),
                 centerTitle: true),
             body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Center(
-                  child: Text(groupData["name"],
-                      style: Theme.of(context).textTheme.headlineMedium)),
               StreamBuilder(
                   stream: db
                       .collection("groups")
                       .doc(groupDocId)
                       .collection("expenses")
-                      .orderBy("name")
+                      .orderBy("createdAt", descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -103,7 +101,7 @@ class _GroupDetailState extends State<GroupDetail> {
                       if (snapshot.data!.docs.isEmpty) {
                         return Center(
                             child: Text(
-                                AppLocalizations.of(context)!.groupNoEntries,
+                                AppLocalizations.of(context)!.expenseNoEntries,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineMedium));
@@ -119,6 +117,11 @@ class _GroupDetailState extends State<GroupDetail> {
                             return const SizedBox();
                           }
 
+                          var formatAmount =
+                              "€${ds.get("amount").toStringAsFixed(2)}";
+                          // Timestamp createdAtTS = ds.get("createdAt");
+                          // var createdAtDT = createdAtTS.toDate();
+
                           return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Card(
@@ -130,7 +133,8 @@ class _GroupDetailState extends State<GroupDetail> {
                                   child: InkWell(
                                       borderRadius: BorderRadius.circular(12.0),
                                       onTap: () {
-                                        GoRouter.of(context).go("/group/details/expense?groupDocId=$groupDocId&expenseDocId=${ds.id}");
+                                        GoRouter.of(context).go(
+                                            "/group/details/expense?groupDocId=$groupDocId&expenseDocId=${ds.id}");
                                       },
                                       child: Padding(
                                           padding: const EdgeInsets.fromLTRB(
@@ -177,14 +181,33 @@ class _GroupDetailState extends State<GroupDetail> {
                                                       ],
                                                     ),
                                                   )),
-                                              const SizedBox(height: 150),
+                                              // Align(
+                                              //   alignment: Alignment.bottomLeft,
+                                              //   child: Text(
+                                              //     intl.DateFormat(
+                                              //             'dd.MM.yyyy HH:MM')
+                                              //         .format(createdAtDT),
+                                              //     style: Theme.of(context)
+                                              //         .textTheme
+                                              //         .labelLarge,
+                                              //   ),
+                                              // ),
                                               Align(
                                                 alignment: Alignment.bottomLeft,
                                                 child: Text(
-                                                  ds["name"],
+                                                  ds.get("name"),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .headlineMedium,
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.bottomLeft,
+                                                child: Text(
+                                                  formatAmount,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelLarge,
                                                 ),
                                               )
                                             ],

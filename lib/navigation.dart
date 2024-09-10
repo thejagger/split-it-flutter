@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_it/pages/expenses/expense_detail.dart';
-import 'package:split_it/pages/groups/group_detail.dart';
-import 'package:split_it/pages/groups/group_list.dart';
+import 'package:split_it/pages/groups/group_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'constants.dart';
